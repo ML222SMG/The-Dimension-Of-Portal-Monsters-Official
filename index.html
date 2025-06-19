@@ -8,19 +8,19 @@
   <style>
     :root {
       --main-color: #6a0dad;
-      --secondary-color: #808080;
-      --header-bg: rgba(0, 0, 0, 0.6);
-      --card-bg: rgba(255, 255, 255, 0.1);
+      --secondary-color: #5e5e5e;
+      --accent-color: #7fdbff;
+      --header-bg: rgba(25, 25, 112, 0.8);
+      --card-bg: rgba(255, 255, 255, 0.07);
       --text-color: #ffffff;
       --highlight: #ffd700;
-      --transition-speed: 0.3s;
+      --transition-speed: 0.4s;
     }
 
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--main-color), var(--secondary-color));
-      background-attachment: fixed;
+      background: linear-gradient(135deg, #6a0dad, #000000);
       min-height: 100vh;
       color: var(--text-color);
       display: flex;
@@ -32,34 +32,41 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 30px;
+      padding: 20px 30px;
       background-color: var(--header-bg);
       flex-wrap: wrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
       animation: slideDown var(--transition-speed) ease;
+      position: relative;
+      z-index: 1100;
     }
 
     .left-header,
     .right-header {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     .language-select,
     .menu-button {
       background: var(--card-bg);
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: var(--text-color);
-      padding: 10px 15px;
+      padding: 10px 16px;
       font-size: 16px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background var(--transition-speed);
+      transition: all var(--transition-speed);
+      backdrop-filter: blur(6px);
     }
 
     .menu-button:hover,
     .language-select:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
     }
 
     main {
@@ -68,52 +75,68 @@
       max-width: 1200px;
       margin: 0 auto;
       text-align: center;
+      animation: fadeIn 1s ease-in-out;
     }
 
     h1 {
-      font-size: 48px;
+      font-size: 52px;
       margin-bottom: 10px;
-      animation: fadeIn var(--transition-speed) ease;
+      background: linear-gradient(90deg, #7fdbff, #b388ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInDown var(--transition-speed) ease;
     }
 
     #subtitle {
-      font-size: 24px;
+      font-size: 22px;
       margin-bottom: 30px;
-      opacity: 0.8;
+      opacity: 0.85;
     }
 
     #content {
       margin-top: 40px;
-      animation: fadeInUp var(--transition-speed) ease;
+      animation: fadeInUp 0.6s ease-in-out;
     }
 
     .downloads, .instructions, #wiki, #credits {
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
       margin-top: 20px;
+      backdrop-filter: blur(10px);
       transition: transform var(--transition-speed);
     }
 
     .downloads:hover, .instructions:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
     }
 
     .download-button {
-      background: var(--highlight);
+      background: var(--accent-color);
       color: black;
-      padding: 14px 28px;
+      padding: 14px 26px;
       margin: 10px;
-      border-radius: 8px;
+      border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
       display: inline-block;
-      transition: background var(--transition-speed);
+      transition: background var(--transition-speed), transform 0.3s;
     }
 
     .download-button:hover {
-      background: #ffcc00;
+      background: #6ddfff;
+      transform: scale(1.05);
+    }
+
+    .version-select {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
     }
 
     footer {
@@ -121,7 +144,8 @@
       padding: 20px;
       text-align: center;
       font-size: 14px;
-      animation: fadeInUp var(--transition-speed) ease;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+      animation: fadeInUp 0.6s ease;
     }
 
     a {
@@ -133,6 +157,54 @@
       text-decoration: underline;
     }
 
+    /* Menú hamburguesa para móvil */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    .hamburger div {
+      height: 4px;
+      background: var(--text-color);
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background-color: rgb(25, 25, 112); /* azul opaco sin transparencia */
+      flex-direction: column;
+      padding: 10px 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      z-index: 1000;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .mobile-menu button {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text-color);
+      margin: 8px 20px;
+      padding: 12px 0;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background var(--transition-speed);
+      width: calc(100% - 40px);
+    }
+
+    .mobile-menu button:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
     /* Animaciones */
     @keyframes fadeIn {
       from {opacity: 0;}
@@ -140,66 +212,118 @@
     }
 
     @keyframes fadeInUp {
-      from {opacity: 0; transform: translateY(20px);}
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes fadeInDown {
+      from {opacity: 0; transform: translateY(-30px);}
       to {opacity: 1; transform: translateY(0);}
     }
 
     @keyframes slideDown {
-      from {transform: translateY(-100%);}
-      to {transform: translateY(0);}
+      from {transform: translateY(-100%); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
     }
 
     @media (max-width: 768px) {
-      header, footer {
-        flex-direction: column;
+      header {
+        justify-content: space-between;
       }
+
+      .left-header {
+        display: none; /* Ocultar menú de escritorio */
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .right-header {
+        order: 2;
+      }
+
+      main {
+        padding: 30px 15px;
+      }
+
       h1 {
         font-size: 36px;
       }
+
       #subtitle {
-        font-size: 20px;
+        font-size: 18px;
       }
+
       .download-button {
         width: 100%;
+        max-width: 300px;
         margin-top: 10px;
+        padding: 12px 0;
       }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="left-header">
-      <button class="menu-button" onclick="showSection('downloads')">Descargas</button>
-      <button class="menu-button" onclick="showSection('howto')">Cómo instalar</button>
-      <button class="menu-button" onclick="showSection('wiki')">Wiki</button>
-      <button class="menu-button" onclick="showSection('credits')">Créditos</button>
-    </div>
-    <div class="right-header">
-      <select class="language-select" onchange="changeLanguage(this.value)">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="pt">Português</option>
-      </select>
-    </div>
-  </header>
+<header>
+  <div class="left-header">
+    <button class="menu-button" onclick="showSection('downloads')">Descargas</button>
+    <button class="menu-button" onclick="showSection('howto')">Cómo instalar</button>
+    <button class="menu-button" onclick="showSection('wiki')">Wiki</button>
+    <button class="menu-button" onclick="showSection('credits')">Créditos</button>
+  </div>
 
-  <main>
-    <h1>The Dimension Of Portal Monsters</h1>
-    <div id="subtitle">Un juego creado por un desarrollador chileno</div>
-    <div id="content">
-      <!-- Contenido dinámico -->
-    </div>
-  </main>
-  
-  <footer id="footerText">
-    Creado por ML222 _MSM | <a href="https://www.youtube.com/channel/UCCCvThDmCWTUQC1E_ZiV2DQ/" target="_blank">YouTube</a>
-  </footer>
+  <div class="hamburger" tabindex="0" aria-label="Abrir menú" role="button" aria-expanded="false" onclick="toggleMobileMenu()" onkeydown="if(event.key==='Enter' || event.key===' ') toggleMobileMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div class="right-header">
+    <select class="language-select" onchange="changeLanguage(this.value)">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+      <option value="pt">Português</option>
+    </select>
+  </div>
+
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Menú móvil">
+    <button onclick="showSection('downloads'); toggleMobileMenu()">Descargas</button>
+    <button onclick="showSection('howto'); toggleMobileMenu()">Cómo instalar</button>
+    <button onclick="showSection('wiki'); toggleMobileMenu()">Wiki</button>
+    <button onclick="showSection('credits'); toggleMobileMenu()">Créditos</button>
+  </nav>
+</header>
+
+<main>
+  <h1>The Dimension Of Portal Monsters</h1>
+  <div id="subtitle">Un juego creado por un desarrollador chileno</div>
+  <div id="content"></div>
+</main>
+
+<footer id="footerText">
+  Creado por ML222 _MSM | <a href="https://www.youtube.com/channel/UCCCvThDmCWTUQC1E_ZiV2DQ/" target="_blank">YouTube</a>
+</footer>
 
 <script>
 let currentLanguage = navigator.language.startsWith('es') ? 'es' :
                       navigator.language.startsWith('pt') ? 'pt' : 'en';
 let currentSection = 'downloads';
+let currentVersion = 'v1';
+
+const mobileMenu = document.getElementById('mobileMenu');
+const hamburger = document.querySelector('.hamburger');
+
+function toggleMobileMenu() {
+  if (mobileMenu.style.display === 'flex') {
+    mobileMenu.style.display = 'none';
+    hamburger.setAttribute('aria-expanded', 'false');
+  } else {
+    mobileMenu.style.display = 'flex';
+    hamburger.setAttribute('aria-expanded', 'true');
+  }
+}
 
 function changeLanguage(lang) {
   currentLanguage = lang;
@@ -209,115 +333,178 @@ function changeLanguage(lang) {
 function updateText() {
   const subtitle = document.getElementById('subtitle');
   const menuButtons = document.querySelectorAll('.menu-button');
+  const mobileButtons = mobileMenu.querySelectorAll('button');
 
-  if (currentLanguage === 'es') {
-      subtitle.innerText = "Un juego creado por un desarrollador chileno";
-      menuButtons[0].innerText = "Descargas";
-      menuButtons[1].innerText = "Cómo instalar";
-      menuButtons[2].innerText = "Wiki";
-      menuButtons[3].innerText = "Créditos";
-      document.getElementById('footerText').innerText = "Creado por ML222";
-      document.getElementById('creditsTitle').innerText = "Créditos"; // Título de créditos en español
-      document.getElementById('creditsText').innerHTML = `
-          <p>ML222_MSM - <a href="https://www.youtube.com/channel/UCCCvThDmCWTUQC1E_ZiV2DQ/" target="_blank">YouTube</a></p>
-          <p>Amsm-YT - <a href="https://youtube.com/@real_amsmyt_official" target="_blank">YouTube</a></p>
-          <p>Le Gato - <a href="https://youtube.com/@gato_msm_tge" target="_blank">YouTube</a></p>
-          <p>Rare Blabbit - <a href="https://youtube.com/@screemufanmsm" target="_blank">YouTube</a></p>
-      `;
-  } else if (currentLanguage === 'en') {
-      subtitle.innerText = "A game created by a Chilean developer";
-      menuButtons[0].innerText = "Downloads";
-      menuButtons[1].innerText = "How to Install";
-      menuButtons[2].innerText = "Wiki";
-      menuButtons[3].innerText = "Credits";
-      document.getElementById('footerText').innerText = "Created by ML222";
-      document.getElementById('creditsTitle').innerText = "Credits"; // Título de créditos en inglés
-      document.getElementById('creditsText').innerHTML = `
-          <p>ML222_MSM - <a href="https://www.youtube.com/channel/UCCCvThDmCWTUQC1E_ZiV2DQ/" target="_blank">YouTube</a></p>
-          <p>Amsm-YT - <a href="https://youtube.com/@real_amsmyt_official" target="_blank">YouTube</a></p>
-          <p>Le Gato - <a href="https://youtube.com/@gato_msm_tge" target="_blank">YouTube</a></p>
-          <p>Rare Blabbit - <a href="https://youtube.com/@screemufanmsm" target="_blank">YouTube</a></p>
-      `;
-  } else if (currentLanguage === 'pt') {
-      subtitle.innerText = "Um jogo criado por um desenvolvedor chileno";
-      menuButtons[0].innerText = "Downloads";
-      menuButtons[1].innerText = "Como instalar";
-      menuButtons[2].innerText = "Wiki";
-      menuButtons[3].innerText = "Créditos";
-      document.getElementById('footerText').innerText = "Criado por ML222";
-      document.getElementById('creditsTitle').innerText = "Créditos"; // Título de créditos en portugués
-      document.getElementById('creditsText').innerHTML = `
-          <p>ML222_MSM - <a href="https://www.youtube.com/channel/UCCCvThDmCWTUQC1E_ZiV2DQ/" target="_blank">YouTube</a></p>
-          <p>Amsm-YT - <a href="https://youtube.com/@real_amsmyt_official" target="_blank">YouTube</a></p>
-          <p>Le Gato - <a href="https://youtube.com/@gato_msm_tge" target="_blank">YouTube</a></p>
-          <p>Rare Blabbit - <a href="https://youtube.com/@screemufanmsm" target="_blank">YouTube</a></p>
-      `;
-  }
+  const translations = {
+    es: {
+      subtitle: "Un juego creado por un desarrollador chileno",
+      downloads: "Descargas",
+      howto: "Cómo instalar",
+      wiki: "Wiki",
+      credits: "Créditos",
+      footer: "Creado por ML222 _MSM",
+      versions: "Versiones",
+      downloadAndroid: "Descargar Android (APK)",
+      downloadPC: "Descargar PC (EXE)",
+      comingSoon: "Próximamente..."
+    },
+    en: {
+      subtitle: "A game created by a Chilean developer",
+      downloads: "Downloads",
+      howto: "How to Install",
+      wiki: "Wiki",
+      credits: "Credits",
+      footer: "Created by ML222 _MSM",
+      versions: "Versions",
+      downloadAndroid: "Download Android (APK)",
+      downloadPC: "Download PC (EXE)",
+      comingSoon: "Coming soon..."
+    },
+    pt: {
+      subtitle: "Um jogo criado por um desenvolvedor chileno",
+      downloads: "Downloads",
+      howto: "Como instalar",
+      wiki: "Wiki",
+      credits: "Créditos",
+      footer: "Criado por ML222 _MSM",
+      versions: "Versões",
+      downloadAndroid: "Baixar Android (APK)",
+      downloadPC: "Baixar PC (EXE)",
+      comingSoon: "Em breve..."
+    }
+  };
 
+  let t = translations[currentLanguage];
 
+  subtitle.innerText = t.subtitle;
+  document.getElementById('footerText').innerText = t.footer + " | ";
+  let ytLink = document.createElement('a');
+  ytLink.href = "https://www.youtube.com/channel/UCCCvThDmCWTUQC1E_ZiV2DQ/";
+  ytLink.target = "_blank";
+  ytLink.innerText = "YouTube";
+  document.getElementById('footerText').appendChild(ytLink);
 
+  menuButtons[0].innerText = t.downloads;
+  menuButtons[1].innerText = t.howto;
+  menuButtons[2].innerText = t.wiki;
+  menuButtons[3].innerText = t.credits;
 
-  
-  showSection(currentSection, true);
+  mobileButtons[0].innerText = t.downloads;
+  mobileButtons[1].innerText = t.howto;
+  mobileButtons[2].innerText = t.wiki;
+  mobileButtons[3].innerText = t.credits;
+
+  showSection(currentSection);
 }
 
-function showSection(section, fromUpdate = false) {
+function showSection(section) {
   const content = document.getElementById('content');
   currentSection = section;
 
+  const t = {
+    es: {
+      versionsLabel: "Versiones",
+      downloadAndroid: "Descargar Android (APK)",
+      downloadPC: "Descargar PC (EXE)",
+      howtoTitle: "Cómo instalar",
+      howtoText: "Los archivos se descargan a través de Google Drive. Puede que tu navegador muestre una advertencia, pero el archivo es seguro.",
+      wikiText: "Aquí irá la información del juego.",
+      creditsTitle: "Créditos",
+      comingSoon: "Próximamente..."
+    },
+    en: {
+      versionsLabel: "Versions",
+      downloadAndroid: "Download Android (APK)",
+      downloadPC: "Download PC (EXE)",
+      howtoTitle: "How to Install",
+      howtoText: "Files are downloaded via Google Drive. Your browser may warn you, but the file is safe.",
+      wikiText: "Here will be the game information.",
+      creditsTitle: "Credits",
+      comingSoon: "Coming soon..."
+    },
+    pt: {
+      versionsLabel: "Versões",
+      downloadAndroid: "Baixar Android (APK)",
+      downloadPC: "Baixar PC (EXE)",
+      howtoTitle: "Como instalar",
+      howtoText: "Os arquivos são baixados via Google Drive. Pode ser que o navegador mostre um aviso, mas o arquivo é seguro.",
+      wikiText: "Aqui estarão as informações do jogo.",
+      creditsTitle: "Créditos",
+      comingSoon: "Em breve..."
+    }
+  };
+
+  let lang = t[currentLanguage];
+
   if (section === 'downloads') {
+    let versionLabel = lang.versionsLabel;
+    let androidLabel = lang.downloadAndroid;
+    let pcLabel = lang.downloadPC;
+
     content.innerHTML = `
       <div class="downloads">
-        <a href="https://drive.google.com/uc?export=download&id=1t5AdBFBQQ34aDLoKKQZEffzjI0FxBKCs" class="download-button" download>
-          ${currentLanguage === 'es' ? 'Descargar Android (APK)' : currentLanguage === 'pt' ? 'Baixar Android (APK)' : 'Download Android (APK)'}
-        </a>
-        <a href="https://drive.google.com/uc?export=download&id=1mtuap3atKDc_a9rC-salT40MSA0Zw8MD" class="download-button" download>
-          ${currentLanguage === 'es' ? 'Descargar PC (EXE)' : currentLanguage === 'pt' ? 'Baixar PC (EXE)' : 'Download PC (EXE)'}
-        </a>
+        <label for="version-select">${versionLabel}:</label>
+        <select id="version-select" class="version-select" onchange="changeVersion(this.value)">
+          <option value="v2">V2</option>
+          <option value="v1" selected>V1</option>
+        </select>
+        <div id="download-links">
+          <a href="https://drive.google.com/uc?export=download&id=1t5AdBFBQQ34aDLoKKQZEffzjI0FxBKCs" class="download-button">${androidLabel}</a>
+          <a href="https://drive.google.com/uc?export=download&id=1mtuap3atKDc_a9rC-salT40MSA0Zw8MD" class="download-button">${pcLabel}</a>
+        </div>
       </div>`;
   } else if (section === 'howto') {
     content.innerHTML = `
       <div class="instructions">
-        <h2>${currentLanguage === 'es' ? 'Cómo instalar' : currentLanguage === 'pt' ? 'Como instalar' : 'How to Install'}</h2>
-        <p>${currentLanguage === 'es' ? 'Los archivos se descargan a través de Google Drive. A veces, tu navegador puede mostrar una advertencia de seguridad, pero el archivo es seguro.' :
-            currentLanguage === 'pt' ? 'Os arquivos são baixados via Google Drive. Às vezes seu navegador pode exibir um aviso de segurança, mas o arquivo é seguro.' :
-            'Files are downloaded via Google Drive. Sometimes your browser may show a security warning, but the file is safe.'}
-        </p>
-        <h3>Android (APK)</h3>
-        <p>${currentLanguage === 'es' ? 'Después de descargar el APK, ábrelo y sigue las instrucciones para instalarlo. Puede que necesites habilitar "Instalar apps desconocidas".' :
-            currentLanguage === 'pt' ? 'Após baixar o APK, abra-o e siga as instruções para instalar. Pode ser necessário ativar "Instalar apps desconhecidos".' :
-            'After downloading the APK, open it and follow the instructions to install. You may need to enable "Install unknown apps".'}</p>
-
-        <h3>PC (EXE)</h3>
-        <p>${currentLanguage === 'es' ? 'Después de descargar el EXE, ábrelo para comenzar la instalación. Si Windows muestra una advertencia, selecciona "Más información" y luego "Ejecutar de todas formas".' :
-            currentLanguage === 'pt' ? 'Após baixar o EXE, abra-o para iniciar a instalação. Se o Windows mostrar um aviso, clique em "Mais informações" e depois "Executar assim mesmo".' :
-            'After downloading the EXE, open it to start installation. If Windows shows a warning, click "More info" and then "Run anyway".'}</p>
+        <h2>${lang.howtoTitle}</h2>
+        <p>${lang.howtoText}</p>
       </div>`;
   } else if (section === 'wiki') {
     content.innerHTML = `
       <div id="wiki">
         <h2>Wiki</h2>
-        <p>${currentLanguage === 'es' ? 'Aquí irá la información del juego.' :
-            currentLanguage === 'pt' ? 'Aqui estarão as informações do jogo.' :
-            'Here will be the game information.'}</p>
+        <p>${lang.wikiText}</p>
       </div>`;
   } else if (section === 'credits') {
     content.innerHTML = `
-      <div id="creditsTitle">Créditos</div>
-        <h2>Créditos</h2>
+      <div id="credits">
+        <h2>${lang.creditsTitle}</h2>
         <p>ML222_MSM - <a href="https://www.youtube.com/channel/UCCCvThDmCWTUQC1E_ZiV2DQ/" target="_blank">YouTube</a></p>
         <p>Amsm-YT - <a href="https://youtube.com/@real_amsmyt_official" target="_blank">YouTube</a></p>
         <p>Le Gato - <a href="https://youtube.com/@gato_msm_tge" target="_blank">YouTube</a></p>
         <p>Rare Blabbit - <a href="https://youtube.com/@screemufanmsm" target="_blank">YouTube</a></p>
       </div>`;
   }
+}
 
-  if (!fromUpdate) {
-    currentSection = section;
-  }
+function changeVersion(version) {
+  currentVersion = version;
+  const links = document.getElementById("download-links");
+  if (!links) return;
+  const t = {
+    es: { androidV1: "https://drive.google.com/uc?export=download&id=1t5AdBFBQQ34aDLoKKQZEffzjI0FxBKCs",
+          pcV1: "https://drive.google.com/uc?export=download&id=1mtuap3atKDc_a9rC-salT40MSA0Zw8MD",
+          androidV2: "https://drive.google.com/uc?export=download&id=1p4zRVR-G-NYCPgOb8zMaAyZDtqlyjLRp",
+          pcV2: "https://drive.google.com/uc?export=download&id=1LcPuDH2wEct6El2CSPvWUvS-EHOBHOD9"},
+    en: { androidV1: "https://drive.google.com/uc?export=download&id=1t5AdBFBQQ34aDLoKKQZEffzjI0FxBKCs",
+          pcV1: "https://drive.google.com/uc?export=download&id=1mtuap3atKDc_a9rC-salT40MSA0Zw8MD",
+          androidV2: "https://drive.google.com/uc?export=download&id=1p4zRVR-G-NYCPgOb8zMaAyZDtqlyjLRp",
+          pcV2: "https://drive.google.com/uc?export=download&id=1LcPuDH2wEct6El2CSPvWUvS-EHOBHOD9"},
+    pt: { androidV1: "https://drive.google.com/uc?export=download&id=1t5AdBFBQQ34aDLoKKQZEffzjI0FxBKCs",
+          pcV1: "https://drive.google.com/uc?export=download&id=1mtuap3atKDc_a9rC-salT40MSA0Zw8MD",
+          androidV2: "https://drive.google.com/uc?export=download&id=1p4zRVR-G-NYCPgOb8zMaAyZDtqlyjLRp",
+          pcV2: "https://drive.google.com/uc?export=download&id=1LcPuDH2wEct6El2CSPvWUvS-EHOBHOD9"},
+  };
+  let langLinks = t[currentLanguage];
+  links.innerHTML = `
+    <a href="${currentVersion === 'v2' ? langLinks.androidV2 : langLinks.androidV1}" class="download-button">${currentLanguage === 'es' ? 'Descargar Android (APK)' : currentLanguage === 'pt' ? 'Baixar Android (APK)' : 'Download Android (APK)'}</a>
+    <a href="${currentVersion === 'v2' ? langLinks.pcV2 : langLinks.pcV1}" class="download-button">${currentLanguage === 'es' ? 'Descargar PC (EXE)' : currentLanguage === 'pt' ? 'Baixar PC (EXE)' : 'Download PC (EXE)'}</a>
+  `;
 }
 
 window.onload = () => {
+  // Ajustar el select al idioma por defecto
+  document.querySelector('.language-select').value = currentLanguage;
   updateText();
 };
 </script>
